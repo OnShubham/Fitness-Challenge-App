@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 export const Header = () => {
   return (
-    <Navbar expand="lg" className="navbar-custom border-bottom ">
+    <Navbar expand="lg" className="navbar-custom shadow-sm bg-light ">
       <Container>
         <Navbar.Brand as={Link} to="/">
           MyWebsite

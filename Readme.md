@@ -6,8 +6,8 @@ python3 run.py
 
 # Frontend
 
-bun install
+npm install
 
-bun dev
+npm run dev
 
 # why used bun -> bun is fast then npm & yarn
