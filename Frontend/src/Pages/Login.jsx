@@ -4,13 +4,15 @@ import { Form, Input, Button, Checkbox } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { postLogin } from "../Api/Auth";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../Store/AuthContext";
 
 export const Login = () => {
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
   });
-  const navigator = useNavigate();
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,8 +26,9 @@ export const Login = () => {
     try {
       const response = await postLogin(loginData);
       console.log("Login response:", response);
+      login();
       setLoginData({ email: "", password: "" });
-      navigator("/");
+      navigate("/dashboard");
     } catch (error) {
       console.error("Login error:", error.message);
     }
@@ -33,27 +36,16 @@ export const Login = () => {
 
   return (
     <div className="d-flex justify-content-center align-items-center pt-5">
-      <div
-        className="p-4 bg-white rounded shadow border"
-        style={{ width: "350px" }}
-      >
+      <div className="p-4 bg-white rounded shadow border" style={{ width: "350px" }}>
         <h2 className="text-center mb-4">Login</h2>
-        <Form
-          name="login"
-          initialValues={{ remember: true }}
-          onFinish={handleLogin}
-        >
+        <Form name="login" initialValues={{ remember: true }} onFinish={handleLogin}>
           <Form.Item
             name="email"
             rules={[{ required: true, message: "Please input your Email!" }]}
             value={loginData.email}
             onChange={handleChange}
           >
-            <Input
-              name="email"
-              prefix={<UserOutlined />}
-              placeholder="Email"
-            />
+            <Input name="email" prefix={<UserOutlined />} placeholder="Email" />
           </Form.Item>
           <Form.Item
             name="password"
@@ -61,12 +53,7 @@ export const Login = () => {
             value={loginData.password}
             onChange={handleChange}
           >
-            <Input
-              name="password"
-              prefix={<LockOutlined />}
-              type="password"
-              placeholder="Password"
-            />
+            <Input name="password" prefix={<LockOutlined />} type="password" placeholder="Password" />
           </Form.Item>
           <Form.Item>
             <Form.Item name="remember" valuePropName="checked" noStyle>
